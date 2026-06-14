@@ -254,7 +254,7 @@ const LandingPage = () => {
         position: 'sticky', top: 0, zIndex: 50,
         backgroundColor: theme === 'dark' ? 'rgba(7, 8, 15, 0.85)' : 'rgba(255, 255, 255, 0.85)'
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', minHeight: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
 
           {/* Logo with theme icon */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
@@ -272,7 +272,7 @@ const LandingPage = () => {
           </Link>
 
           {/* Navigation Links */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap', justifyContent: 'center' }}>
             {[
               { href: '#destinations', label: 'Destinations', icon: <MapPin size={14} /> },
               { href: '#hotels', label: 'Hotels', icon: <Hotel size={14} /> },
@@ -390,7 +390,7 @@ const LandingPage = () => {
             Easy Bookings, Seamless Journeys
           </div>
 
-          <h1 style={{ fontSize: '56px', fontWeight: '800', lineHeight: '1.1', color: '#fff', letterSpacing: '-2px', marginBottom: '20px' }}>
+          <h1 className="hero-title" style={{ fontWeight: '800', lineHeight: '1.1', color: '#fff', letterSpacing: '-2px', marginBottom: '20px' }}>
             {isLoggedIn ? `Welcome back, ${user.firstName || 'Traveler'}!` : 'Explore India,'}
             <br />
             <span style={{ background: 'var(--brand-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>

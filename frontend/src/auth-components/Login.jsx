@@ -184,8 +184,8 @@ const Login = () => {
                 <span className="partner-btn-label">Register property</span>
               </span>
             </Link>
-            <Link to="/register-operator" className="partner-btn" id="link-register-operator" style={{ marginLeft: '10px' }}>
-              <span className="partner-btn-icon"><Bus size={18} color="#6366f1" /></span>
+            <Link to="/register-operator" className="partner-btn" id="link-register-operator">
+              <span className="partner-btn-icon train"><Bus size={18} color="#6366f1" /></span>
               <span className="partner-btn-text">
                 <span className="partner-btn-title">Bus Operator</span>
                 <span className="partner-btn-label">Register agency</span>

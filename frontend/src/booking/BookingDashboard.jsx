@@ -19,12 +19,11 @@ const BookingDashboard = () => {
   })
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem('user') || '{}')
+  const { user, token, logout: authLogout } = useAuth()
   const [logoutConfirm, setLogoutConfirm] = useState(false)
 
   const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    authLogout()
     navigate('/')
   }
 

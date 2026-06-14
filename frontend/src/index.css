@@ -930,6 +930,12 @@ a:hover {
   justify-content: space-between;
   gap: 16px;
 }
+@media (max-width: 768px) {
+  .admin-navbar-inner {
+    padding: 0 16px;
+    height: 60px;
+  }
+}
 
 /* Brand logo in navbar */
 .admin-brand {
@@ -1011,6 +1017,11 @@ a:hover {
   margin: 0 auto;
   padding: 28px 24px 48px;
 }
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 20px 16px 36px;
+  }
+}
 
 /* Tab bar */
 .admin-tabs {
@@ -1022,6 +1033,18 @@ a:hover {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   margin-bottom: 28px;
+}
+@media (max-width: 768px) {
+  .admin-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
 }
 .admin-tab {
   display: flex;
@@ -1414,6 +1437,11 @@ a:hover {
   gap: 18px;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 .item-card {
   background: var(--bg-surface);
@@ -1548,6 +1576,11 @@ a:hover {
   overflow-y: auto;
 }
 .modal-box.wide { max-width: 960px; }
+@media (max-width: 640px) {
+  .modal-box {
+    padding: 20px 16px;
+  }
+}
 
 .modal-header {
   display: flex;
@@ -1555,6 +1588,11 @@ a:hover {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+  .modal-header {
+    margin-bottom: 16px;
+  }
 }
 .modal-title {
   font-size: 22px;
@@ -2482,3 +2520,7 @@ a:hover {
 .d-btn.sm:hover:not(:disabled) {
   transform: translateY(-1px) scale(1.03);
 }
+
+/* Hero Title */
+.hero-title { font-size: 56px; }
+@media (max-width: 768px) { .hero-title { font-size: 36px !important; } }
