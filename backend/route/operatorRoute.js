@@ -1,0 +1,12 @@
+const express = require('express');
+const router = express.Router();
+const OperatorController = require('../controller/operatorController');
+const auth = require('../middelware/auth');
+router.post('/add', OperatorController.addOperator);
+router.get('/get', auth, OperatorController.getOperator);
+router.get('/get/:id', auth, OperatorController.getOperatorById);
+router.put('/update/:id', auth, OperatorController.updateOperator);
+router.delete('/delete/:id', auth, OperatorController.deleteOperator);
+router.put('/approveOperator/:id', auth, OperatorController.approveOperator);
+router.put('/rejectOperator/:id', auth, OperatorController.rejectOperator);
+module.exports = router;
