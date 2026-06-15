@@ -110,7 +110,7 @@ const OperatorDash = () => {
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button className="admin-nav-btn ghost" onClick={() => setActiveTab('profile')}>
-              <UserCircle size={17} /> {savedUser.firstName || 'Profile'}
+              <UserCircle size={17} /> {savedUser?.firstName || 'Profile'}
             </button>
             <button className="admin-nav-btn danger" onClick={() => setLogoutConfirm(true)}>
               <LogOut size={16} /> Logout
@@ -134,7 +134,7 @@ const OperatorDash = () => {
             <UserCircle size={16} /> My Agency Profile
           </button>
         </div>
-          {(!operatorData?.isApproved && savedUser.role === 'bus_admin') && (
+          {(!operatorData?.isApproved && savedUser?.role === 'bus_admin') && (
             <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderLeft: '4px solid #f59e0b', padding: '16px', borderRadius: '8px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ fontSize: '24px' }}>⏳</span>
               <div>

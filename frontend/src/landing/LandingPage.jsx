@@ -718,33 +718,33 @@ const LandingPage = () => {
                       </div>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: '19px', fontWeight: '700', color: 'var(--text-heading)', margin: 0 }}>{bus.busName}</h3>
-                      <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>No: {bus.busNumber} | Operator: {bus.operatorName}</span>
+                      <h3 className="truncate" style={{ fontSize: '19px', fontWeight: '700', color: 'var(--text-heading)', margin: 0 }} title={bus.busName}>{bus.busName}</h3>
+                      <span className="truncate" style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)' }} title={`No: ${bus.busNumber} | Operator: ${bus.operatorName}`}>No: {bus.busNumber} </span>
                     </div>
 
                     {/* Route Details */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-                      <div style={{ flex: 1 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>From</span>
-                        <strong style={{ fontSize: '14px', color: 'var(--text-heading)' }}>{bus.fromCityID?.city || 'Origin'}</strong>
+                        <strong className="truncate" style={{ display: 'block', fontSize: '14px', color: 'var(--text-heading)' }} title={bus.fromCityID?.city}>{bus.fromCityID?.city || 'Origin'}</strong>
                       </div>
                       <ArrowUpDown size={14} style={{ color: 'var(--text-muted)', transform: 'rotate(90deg)', flexShrink: 0 }} />
-                      <div style={{ flex: 1, textAlign: 'right' }}>
+                      <div style={{ flex: 1, minWidth: 0, textAlign: 'right' }}>
                         <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>To</span>
-                        <strong style={{ fontSize: '14px', color: 'var(--text-heading)' }}>{bus.toCityID?.city || 'Destination'}</strong>
+                        <strong className="truncate" style={{ display: 'block', fontSize: '14px', color: 'var(--text-heading)' }} title={bus.toCityID?.city}>{bus.toCityID?.city || 'Destination'}</strong>
                       </div>
                     </div>
 
                     <div className="mt-auto" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px' }}>
-                      <div>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block' }}>Seats Available: {bus.availableSeats}</span>
-                        <strong style={{ fontSize: '17px', color: 'var(--text-heading)' }}>Rs. {bus.fare}</strong>
+                      <div style={{ minWidth: 0, marginRight: '8px' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', whiteSpace: 'nowrap' }}>Seats: {bus.availableSeats}</span>
+                        <strong className="truncate" style={{ display: 'block', fontSize: '17px', color: 'var(--text-heading)' }}>Rs. {bus.fare}</strong>
                       </div>
-                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexShrink: 0 }}>
                         <button onClick={() => handleAddToWishlist('bus', bus._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', border: 'none', height: '42px', width: '42px', borderRadius: 'var(--radius-md)', color: '#ef4444', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s', flexShrink: 0 }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} title="Add to Wishlist">
                           <Heart size={18} />
                         </button>
-                        <button onClick={() => navigate(`/bus/${bus._id}`)} style={{ background: '#6366f1', color: '#fff', border: 'none', height: '42px', padding: '0 20px', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <button onClick={() => navigate(`/bus/${bus._id}`)} style={{ background: '#6366f1', color: '#fff', border: 'none', height: '42px', padding: '0 16px', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontWeight: '600', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           Book Seat
                         </button>
                       </div>

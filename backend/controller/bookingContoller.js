@@ -276,7 +276,6 @@ exports.confirmBooking = async (req, res) => {
     booking.bookingStatus = "Confirmed";
     await booking.save();
 
-    // Send Email
     const mailOptions = {
       from: '"JourneyHub" <jitendrasingh63793@gmail.com>',
       to: booking.user.email,
@@ -320,7 +319,6 @@ exports.cancelBooking = async (req, res) => {
 
     await restoreAvailability(booking);
 
-    // Send Email
     const mailOptions = {
       from: '"JourneyHub" <jitendrasingh63793@gmail.com>',
       to: booking.user.email,

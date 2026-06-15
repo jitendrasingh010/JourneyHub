@@ -1,4 +1,3 @@
-// backend/model/operatorModel.js
 const mongoose = require("mongoose");
 
 const operatorSchema = new mongoose.Schema(
@@ -21,7 +20,6 @@ const operatorSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Business ka official mobile number
     businessPhone: {
       type: String,
       required: true,
@@ -56,7 +54,6 @@ const operatorSchema = new mongoose.Schema(
       default: false, 
     },
     
-    // Status - active / inactive / suspended
     status: {
       type: String,
       enum: ["active", "inactive", "suspended"],

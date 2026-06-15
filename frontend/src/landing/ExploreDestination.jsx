@@ -343,7 +343,7 @@ const ExploreDestination = () => {
                     </div>
 
                     <div >
-                      <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-heading)', margin: 0 }}>{bus.busName}</h3>
+                      <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-heading)', margin: 0 }}>{bus.busName.slice(0,20)}</h3>
                       <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>No: {bus.busNumber} | {bus.operatorName}</span>
                     </div>
 

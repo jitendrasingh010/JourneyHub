@@ -8,13 +8,11 @@ const busSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
     busNumber: {
       type: String,
       required: true,
       unique: true,
     },
-
     operatorName: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Operator",
@@ -44,17 +42,13 @@ const busSchema = new mongoose.Schema(
       ref: "Location",
       required: true,
     },
-
-
     duration: {
       type: String,
     },
-
     totalSeats: {
       type: Number,
       required: true,
     },
-
     availableSeats: {
       type: Number,
       required: true,
@@ -64,13 +58,11 @@ const busSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
     amenities: [
       {
         type: String,
       },
     ],
-
     boardingPoints: [
       {
         name: String,
@@ -78,7 +70,6 @@ const busSchema = new mongoose.Schema(
         time: String,
       },
     ],
-
     droppingPoints: [
       {
         name: String,
@@ -99,7 +90,7 @@ const busSchema = new mongoose.Schema(
 
     managedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // bus_admin
+      ref: "User", 
       required: true,
     },
         images: [
