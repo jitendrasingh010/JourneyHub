@@ -332,7 +332,6 @@ const AddBus = () => {
         </div>
       )}
 
-      
         {isFormOpen && (
           <div className="modal-overlay"
           >

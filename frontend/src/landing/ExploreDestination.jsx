@@ -102,8 +102,22 @@ const ExploreDestination = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-base)', color: 'var(--text-body)' }}>
-        <p>Loading destination...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-base)', color: 'var(--text-body)', gap: '16px' }}>
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+          .destination-spinner {
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            border-top: 4px solid var(--brand-from);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            animation: spin 1s linear infinite;
+          }
+        `}</style>
+        <div className="destination-spinner"></div>
+        <p style={{ fontSize: '15px', fontWeight: '500', opacity: 0.8 }}>Loading destination details...</p>
       </div>
     )
   }

@@ -79,6 +79,12 @@ const bookingSchema = new mongoose.Schema(
       type: String,
     },
 
+    seatNumbers: [
+      {
+        type: String,
+      }
+    ],
+
   },
   {
     timestamps: true,

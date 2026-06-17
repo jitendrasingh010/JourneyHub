@@ -3,16 +3,24 @@ const Bus = require('../model/busModel');
 const { uploadImage } = require('../cloudnary/cloudnary');
 
 const uploadBusImage = async (req) => {
-  if (!req.files || !req.files.image) {
+  if (!req.files) {
     return null;
   }
 
-  const imageUrl = await uploadImage(
-    req.files.image,
-    "air-bin/buses"
-  );
+  const fileData = req.files.image || req.files.images;
+  if (!fileData) {
+    return null;
+  }
 
-  return imageUrl;
+  const files = Array.isArray(fileData) ? fileData : [fileData];
+  const urls = [];
+
+  for (const file of files) {
+    const url = await uploadImage(file, "air-bin/buses");
+    urls.push(url);
+  }
+
+  return urls;
 };
 
 const makeArray = (value) => {
@@ -114,7 +122,7 @@ exports.updateBus = async (req, res) => {
     const updateData = { ...req.body };
     const images = await uploadBusImage(req);
 
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       updateData.images = images;
     }
 

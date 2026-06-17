@@ -192,10 +192,31 @@ const BookingProfile = ({
       {message && <div className="d-message info" style={{ marginTop: '12px' }}>{message}</div>}
 
       {loading ? (
-        <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div >Loading...</div>
-          <div >Loading...</div>
-          <div >Loading...</div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '12px',
+          padding: '60px 20px',
+          color: 'var(--text-muted)'
+        }}>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+            .booking-profile-spinner {
+              border: 3px solid rgba(59, 130, 246, 0.1);
+              border-top: 3px solid #3b82f6;
+              border-radius: 50%;
+              width: 36px;
+              height: 36px;
+              animation: spin 0.85s linear infinite;
+              box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
+            }
+          `}</style>
+          <div className="booking-profile-spinner"></div>
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>Loading your bookings...</span>
         </div>
       ) : filteredBookings.length === 0 ? (
         <div className="empty-state">
@@ -217,7 +238,7 @@ const BookingProfile = ({
                 )}
                 <p><strong>Journey Date:</strong> {new Date(booking.journeyDate).toLocaleDateString()}</p>
                 <p><strong>Booked On:</strong> {new Date(booking.bookingDate || booking.createdAt).toLocaleDateString()}</p>
-                <p><strong>{booking.bookingType === 'hotel' ? 'Rooms' : 'Seats'}:</strong> {booking.totalSeats}</p>
+                <p><strong>{booking.bookingType === 'hotel' ? 'Rooms' : 'Seats'}:</strong> {booking.totalSeats}{booking.bookingType === 'bus' && booking.seatNumbers && booking.seatNumbers.length > 0 && ` (${booking.seatNumbers.join(', ')})`}</p>
                 <p><strong>Amount:</strong> Rs. {booking.amount}</p>
                 {booking.specialRequest && (
                   <p style={{ fontStyle: 'italic', fontSize: '13px', marginTop: '6px', color: 'var(--text-muted)' }}>

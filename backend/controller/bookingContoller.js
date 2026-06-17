@@ -111,6 +111,7 @@ exports.addBooking = async (req, res) => {
       journeyDate,
       totalSeats = 1,
       specialRequest,
+      seatNumbers = [],
     } = req.body;
 
     const quantity = Number(totalSeats);
@@ -152,8 +153,10 @@ exports.addBooking = async (req, res) => {
       }
 
       amount = selectedHotel.pricePerNight * quantity;
-      selectedHotel.availableRooms -= quantity;
-      await selectedHotel.save();
+      await Hotel.updateOne(
+        { _id: selectedHotel._id },
+        { $inc: { availableRooms: -quantity } }
+      );
     } else {
       if (!bus) {
         return res.status(400).json({ message: "Please select a bus" });
@@ -165,13 +168,55 @@ exports.addBooking = async (req, res) => {
         return res.status(404).json({ message: "Bus is not available" });
       }
 
+      if (!seatNumbers || !Array.isArray(seatNumbers) || seatNumbers.length === 0) {
+        return res.status(400).json({ message: "Please select your seat(s)" });
+      }
+
+      if (quantity !== seatNumbers.length) {
+        return res.status(400).json({ message: "Number of seats must match selected seats count" });
+      }
+
+      // Check seat availability in database for this date
+      const startOfDay = new Date(travelDate);
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(travelDate);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      const existingBookings = await Booking.find({
+        bus: bus,
+        journeyDate: { $gte: startOfDay, $lte: endOfDay },
+        bookingStatus: { $ne: "Cancelled" }
+      });
+
+      let occupiedSeats = [];
+      existingBookings.forEach(eb => {
+        if (eb.seatNumbers && eb.seatNumbers.length > 0) {
+          occupiedSeats = occupiedSeats.concat(eb.seatNumbers);
+        }
+      });
+
+      const doubleBooked = seatNumbers.filter(seat => occupiedSeats.includes(seat));
+      if (doubleBooked.length > 0) {
+        return res.status(400).json({ message: `Seat(s) ${doubleBooked.join(', ')} are already booked for this date.` });
+      }
+
       if (selectedBus.availableSeats < quantity) {
         return res.status(400).json({ message: "Not enough seats available" });
       }
 
-      amount = selectedBus.fare * quantity;
-      selectedBus.availableSeats -= quantity;
-      await selectedBus.save();
+      // Compute total fare based on seat type
+      let calculatedAmount = 0;
+      seatNumbers.forEach(seat => {
+        const isSleeper = seat.startsWith('L') || seat.startsWith('UL') || seat.startsWith('UR');
+        const seatPrice = isSleeper ? Math.round(selectedBus.fare * 1.8) : selectedBus.fare;
+        calculatedAmount += seatPrice;
+      });
+
+      amount = calculatedAmount;
+      await Bus.updateOne(
+        { _id: selectedBus._id },
+        { $inc: { availableSeats: -quantity } }
+      );
     }
 
     try {
@@ -184,6 +229,7 @@ exports.addBooking = async (req, res) => {
         totalSeats: quantity,
         amount,
         specialRequest,
+        seatNumbers: bookingType === "bus" ? seatNumbers : [],
       });
 
       const savedBooking = await populateBooking(Booking.findById(booking._id));
@@ -194,13 +240,17 @@ exports.addBooking = async (req, res) => {
       });
     } catch (error) {
       if (selectedHotel) {
-        selectedHotel.availableRooms += quantity;
-        await selectedHotel.save();
+        await Hotel.updateOne(
+          { _id: selectedHotel._id },
+          { $inc: { availableRooms: quantity } }
+        );
       }
 
       if (selectedBus) {
-        selectedBus.availableSeats += quantity;
-        await selectedBus.save();
+        await Bus.updateOne(
+          { _id: selectedBus._id },
+          { $inc: { availableSeats: quantity } }
+        );
       }
 
       throw error;
@@ -282,7 +332,7 @@ exports.confirmBooking = async (req, res) => {
       subject: "JourneyHub: Your Booking is Confirmed",
       text: `Hello ${booking.user.firstName || 'Traveler'},\n\nYour booking has been Confirmed.\n\nThank you for choosing JourneyHub!`
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log("Error sending email:", error);
@@ -325,7 +375,7 @@ exports.cancelBooking = async (req, res) => {
       subject: "JourneyHub: Your Booking is Cancelled",
       text: `Hello ${booking.user.firstName || 'Traveler'},\n\nYour booking has been Cancelled.\n\nThank you for choosing JourneyHub!`
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log("Error sending email:", error);
@@ -335,6 +385,36 @@ exports.cancelBooking = async (req, res) => {
     });
 
     return res.status(200).json({ message: "Booking cancelled successfully", booking });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getBookedSeats = async (req, res) => {
+  try {
+    const { busId, date } = req.query;
+    if (!busId || !date) {
+      return res.status(400).json({ message: "busId and date are required" });
+    }
+
+    const travelDate = new Date(date);
+    const startOfDay = new Date(travelDate.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(travelDate.setHours(23, 59, 59, 999));
+
+    const bookings = await Booking.find({
+      bus: busId,
+      journeyDate: { $gte: startOfDay, $lte: endOfDay },
+      bookingStatus: { $ne: "Cancelled" }
+    });
+
+    let bookedSeats = [];
+    bookings.forEach(b => {
+      if (b.seatNumbers && b.seatNumbers.length > 0) {
+        bookedSeats = bookedSeats.concat(b.seatNumbers);
+      }
+    });
+
+    return res.status(200).json({ bookedSeats });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
